@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>American Football Trivia Game</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #0b1f3a, #f2f2f2);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background: white;
+            max-width: 650px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            color: #0b1f3a;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #0b1f3a;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #163a63;
+        }
+
+        #score {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        .footer-link {
+            margin-top: 20px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🏈 NFL Trivia Game</h1>
+
+    <p id="score">Score: 0</p>
+
+    <h2 id="question"></h2>
+
+    <div id="answers"></div>
+
+    <p id="result"></p>
+
+    <button onclick="nextQuestion()">Next Question</button>
+    <button onclick="restartGame()">Restart</button>
+
+    <a class="footer-link" href="scratch.html">Back to Scratch Page</a>
+
+</div>
+
+<script>
+let questions = [
+    {
+        question: "How many players are on the field per NFL team during play?",
+        answers: ["9", "11", "12"],
+        correct: "11"
+    },
+    {
+        question: "What is a touchdown worth?",
+        answers: ["3 points", "6 points", "7 points"],
+        correct: "6 points"
+    },
+    {
+        question: "What is it called when a quarterback is tackled behind the line of scrimmage?",
+        answers: ["Fumble", "Sack", "Interception"],
+        correct: "Sack"
+    },
+    {
+        question: "Which league is the highest level of American football?",
+        answers: ["NFL", "NCAA", "CFL"],
+        correct: "NFL"
+    }
+];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion() {
+    let q = questions[current];
+    document.getElementById("question").innerText = q.question;
+
+    let answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+
+    q.answers.forEach(ans => {
+        let btn = document.createElement("button");
+        btn.innerText = ans;
+        btn.onclick = () => checkAnswer(ans);
+        answersDiv.appendChild(btn);
+    });
+
+    document.getElementById("result").innerText = "";
+}
+
+function checkAnswer(answer) {
+    let correct = questions[current].correct;
+
+    if (answer === correct) {
+        score++;
+        document.getElementById("result").innerText = "Correct! 🔥";
+    } else {
+        document.getElementById("result").innerText = "Wrong ❌ Correct answer: " + correct;
+    }
+
+    document.getElementById("score").innerText = "Score: " + score;
+}
+
+function nextQuestion() {
+    current++;
+
+    if (current >= questions.length) {
+        document.getElementById("question").innerText = "Game Over!";
+        document.getElementById("answers").innerHTML = "";
+        document.getElementById("result").innerText = "Final Score: " + score + " / " + questions.length;
+        return;
+    }
+
+    loadQuestion();
+}
+
+function restartGame() {
+    current = 0;
+    score = 0;
+    document.getElementById("score").innerText = "Score: 0";
+    loadQuestion();
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
